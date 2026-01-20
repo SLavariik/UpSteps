@@ -114,15 +114,10 @@ function shuffleArray(arr) {
   }
   return a;
 }
-let dayStarted = false;
 function prepareDay(day) {
   // Подготовка стартового состояния для заданного дня.
   // day === 1  -> ничего экстра не делаем (игрок начинает с текущего сохранения)
   // day === 2  -> создаём "новую" команду: все наняты, все в минусе, нельзя выбирать кандидатов
-  dayEnded = false;          // сбрасываем
-  hasShownEndScreen = false; // сбрасываем
-  isInitialLoad = true;
-  dayStarted = false;
   if (day === 2) {
     gameState.balance = 200000;
     const roleAvatars = {
@@ -150,6 +145,7 @@ function prepareDay(day) {
   // Пересчёт и рендер
   recalcIncome();
   saveGame();
+  updateUI();
 }
 function showDayIntro(day) {
   const intro = document.getElementById("dayIntroOverlay");
@@ -228,9 +224,9 @@ function startGameFromMenu() {
 function startDayFromIntro() {
   const intro = document.getElementById('dayIntroScreen');
   if (intro) intro.classList.add('hidden');
-  dayStarted = true;
-  isInitialLoad = false;
 
+
+  // Подготовка дня (создаём команду/назначаем параметры, если нужно)
   prepareDay(gameState.day);
   if (gameState.day === 1 && !localStorage.getItem("onboardingDone")) {
     startOnboarding();
@@ -249,15 +245,12 @@ function startDayFromIntro() {
   // И сразу обновляем иконку паузы
   const pauseBtn = document.querySelector('.pause-btn');
   if (pauseBtn) pauseBtn.textContent = '⏸';
-  if (gameState.day === 2) {
-  if (dayStarted && !dayEnded && !hasShownEndScreen) {
-    if (gameState.incomePerSecond >= 0) {
-      setTimeout(() => endDay(), 500);
-    }
-  }
-}
 
 
+  // Немного даём времени интерфейсу отрисовать состояние, затем разрешаем проверки завершения дня
+  setTimeout(() => {
+    isInitialLoad = false;
+  }, 600);
 }
 
 
