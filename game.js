@@ -118,6 +118,9 @@ function prepareDay(day) {
   // Подготовка стартового состояния для заданного дня.
   // day === 1  -> ничего экстра не делаем (игрок начинает с текущего сохранения)
   // day === 2  -> создаём "новую" команду: все наняты, все в минусе, нельзя выбирать кандидатов
+  dayEnded = false;          // сбрасываем
+  hasShownEndScreen = false; // сбрасываем
+  isInitialLoad = true;
   if (day === 2) {
     gameState.balance = 200000;
     const roleAvatars = {
@@ -224,6 +227,7 @@ function startGameFromMenu() {
 function startDayFromIntro() {
   const intro = document.getElementById('dayIntroScreen');
   if (intro) intro.classList.add('hidden');
+  isInitialLoad = false;
 
 
   // Подготовка дня (создаём команду/назначаем параметры, если нужно)
