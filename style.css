@@ -1,0 +1,1495 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+  overflow: hidden;
+  color: #333;
+}
+
+/* Верхняя панель */
+.top-panel {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+/* Кнопка отката дня */
+.rollback-btn {
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+  color: #666;
+}
+
+.rollback-btn:hover {
+  transform: scale(1.1);
+  background: #f0f0f0;
+  color: #333;
+}
+
+.rollback-btn:active {
+  transform: scale(0.95);
+}
+
+.time-pill {
+  background: linear-gradient(90deg, #67b7ff, #4b87ff);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 999px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.clock-icon {
+  font-size: 16px;
+}
+
+.pause-btn {
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.pause-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Цель */
+.task-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.task-pill {
+  background: linear-gradient(90deg, #a06bff, #c77dff);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.task-icon {
+  font-size: 16px;
+}
+
+.task-hint {
+  background: #e0e0e0;
+  color: #666;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  position: relative;
+}
+
+.task-hint::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #e0e0e0;
+}
+
+/* Левая боковая панель */
+.left-sidebar {
+  position: absolute;
+  left: 20px;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 10;
+}
+
+.sidebar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.sidebar-item:hover {
+  transform: scale(1.05);
+}
+
+.sidebar-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.budget-icon {
+  background: #4caf50;
+  color: white;
+}
+
+.employees-icon {
+  background: #1a1a1a;
+  color: white;
+}
+
+.sidebar-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Сцена */
+.scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Офис */
+.office-bg {
+  position: absolute;
+  inset: 0;
+  background: url("assets/office.png") center/contain no-repeat;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Интерактивные круги команд */
+.team-circle {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0.9;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.team-circle:hover {
+  transform: scale(1.1);
+}
+
+.team-circle svg {
+  width: 50px;
+  height: 50px;
+}
+
+.team-circle.orange {
+  background: #ff7a2f;
+  left: 40%;
+  top: 40%;
+}
+.team-panel {
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  width: 400px;
+  max-height: calc(100vh - 120px); 
+  overflow-y: auto;               
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  z-index: 5;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.close-panel-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #999;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.close-panel-btn:hover {
+  background: #f0f0f0;
+}
+
+.team-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ff7a2f;
+  margin: 0 0 12px 0;
+}
+
+.team-desc {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.team-finances {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.transfer-btn {
+  width: 100%;
+  background: #4b5cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.transfer-btn:hover {
+  background: #3a4aef;
+}
+
+.finance-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.finance-item:last-child {
+  margin-bottom: 0;
+}
+
+.finance-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.finance-value {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.coin-icon {
+  font-size: 16px;
+}
+
+.profit-value {
+  color: #e53935;
+}
+
+.profit-value.positive {
+  color: #4caf50;
+}
+
+.profit-icon {
+  font-size: 14px;
+}
+
+.employees-section {
+  margin-top: 20px;
+}
+
+.employees-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+/* Сотрудник */
+.employee {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: box-shadow 0.2s;
+  flex-wrap: wrap; /* Позволяет панели выбора падать вниз, не толкая кнопки */
+}
+
+.employee:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.emp-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.employee-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff7a2f, #ff9a5a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.emp-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.emp-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.emp-name .tooltip-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #666;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: help;
+  position: relative;
+  margin-left: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.emp-name .tooltip-icon:hover {
+  background: #4b5cff;
+  color: white;
+}
+
+.emp-name .tooltip-icon:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: normal;
+  width: 280px;
+  text-align: left;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.emp-name .tooltip-icon:hover::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #333;
+  z-index: 1001;
+  pointer-events: none;
+}
+
+.profit-chip {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.profit-chip.negative {
+  background: #ffebee;
+  color: #e53935;
+}
+
+.profit-chip.positive {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+
+.employee-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.upgrade-price {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #666;
+  margin-right: 8px;
+}
+
+.hire-btn, .upgrade-btn, .select-candidate-btn {
+  background: #4b5cff;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  white-space: nowrap;
+}
+
+.hire-btn:hover, .upgrade-btn:hover, .select-candidate-btn:hover {
+  background: #3a4aef;
+  transform: scale(1.05);
+}
+
+.hire-btn:active, .upgrade-btn:active, .select-candidate-btn:active {
+  transform: scale(0.98);
+}
+
+.candidate-selector-panel {
+  margin-top: 12px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  width: 100%; /* Панель выбора теперь всегда снизу на всю ширину */
+}
+
+.candidate-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.candidate-info {
+  min-width: 200px;
+  text-align: center;
+}
+
+.candidate-info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.candidate-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.candidate-label {
+  font-size: 13px;
+  color: #666;
+}
+
+.candidate-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.candidate-value.positive {
+  color: #4caf50;
+}
+
+.candidate-value.negative {
+  color: #e53935;
+}
+
+.candidate-nav-btn {
+  background: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.candidate-nav-btn:hover {
+  background: #e0e0e0;
+}
+
+/* Нижняя панель */
+.bottom-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 12px 24px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  z-index: 10;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.player-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.player-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff7a2f, #ff9a5a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.balance-display, .budget-display, .income-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+.income-display.positive, .income-display.positive .income-arrow {
+  color: #4caf50;
+}
+
+.income-display.negative, .income-display.negative .income-arrow {
+  color: #e53935;
+}
+
+.income-arrow {
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.budget-display {
+  font-size: 14px;
+  color: #666;
+}
+
+.budget-label {
+  font-size: 13px;
+  color: #999;
+}
+
+.income-display {
+  color: #4caf50;
+}
+
+.income-arrow {
+  font-size: 16px;
+  color: #4caf50;
+}
+
+/* Модалки */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.modal-content h3 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.modal-actions button:first-child {
+  background: #4b5cff;
+  color: white;
+}
+
+.modal-actions button:last-child {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.modal-actions button:hover {
+  transform: scale(1.05);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Анимации */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.employee.new {
+  animation: pulse 0.5s ease-in-out;
+}
+
+/* Форматирование чисел */
+.number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Грейд сотрудника */
+.grade-badge {
+  display: inline-block;
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+/* Экран завершения дня */
+.end-day-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.confetti-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.end-day-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 24px 0;
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 24px 0;
+  text-align: left;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.task-item.completed {
+  background: #e8f5e9;
+}
+
+.task-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.task-item.completed .task-check {
+  background: #4caf50;
+  color: white;
+}
+
+.task-item:not(.completed) .task-check {
+  background: #e0e0e0;
+  color: #999;
+}
+
+.task-text {
+  flex: 1;
+  color: #333;
+}
+
+.task-item.completed .task-text {
+  color: #2e7d32;
+}
+
+.end-day-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-primary {
+  flex: 1;
+  background: #4b5cff;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-primary:hover {
+  background: #3a4aef;
+  transform: scale(1.02);
+}
+
+.btn-secondary {
+  flex: 1;
+  background: white;
+  color: #4b5cff;
+  border: 2px solid #4b5cff;
+  border-radius: 999px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #f0f4ff;
+  transform: scale(1.02);
+}
+
+/* Экран теста */
+.test-content {
+  max-width: 600px;
+  text-align: center;
+}
+
+.test-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.question-icon {
+  font-size: 64px;
+  color: #ff6b9d;
+}
+
+.question-number {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.test-question {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 32px 0;
+  line-height: 1.4;
+}
+
+.answers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.answer-item {
+  padding: 16px 20px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.answer-item:hover {
+  background: #e8e8e8;
+  transform: translateX(4px);
+}
+
+.answer-item.selected {
+  border-color: #4b5cff;
+  background: #e3f2fd;
+}
+
+.answer-item.correct {
+  background: #e8f5e9;
+  border-color: #4caf50;
+  color: #2e7d32;
+}
+
+.answer-item.correct::after {
+  content: ' ✓';
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+.answer-item.wrong {
+  background: #ffebee;
+  border-color: #e53935;
+  color: #c62828;
+}
+
+.answer-item.wrong::after {
+  content: ' ✕';
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+/* Экран результата теста */
+.test-result-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.test-result-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  margin: 16px 0 24px 0;
+}
+
+.test-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #4caf50;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 999px;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 24px 0;
+}
+
+.score-check {
+  font-size: 28px;
+}
+
+.score-text {
+  font-size: 32px;
+}
+/* ---- Кандидат (листалка) ---- */
+.candidate-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+}
+
+.candidate-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  background: #f4f6fb;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+
+.candidate-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.candidate-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #222;
+}
+
+.candidate-grade {
+  font-size: 12px;
+  color: #666;
+  background: #f5f6fb;
+  padding: 4px 8px;
+  border-radius: 999px;
+  display: inline-block;
+  align-self: start;
+}
+
+/* Немного выравнивания для блока с цифрами (прибыль/цена) */
+.candidate-info-content {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid #f0f0f0;
+}
+/* ---- Стили для ненанятых сотрудников (только аватар и роль) ---- */
+.employee.not-hired .employee-avatar {
+  background: #f5f6f8;
+  color: transparent; /* аватарка «пустая» */
+  box-shadow: none;
+}
+
+.employee.not-hired .emp-name {
+  color: #bdbdbd; /* приглушённый текст роли */
+}
+
+/* Скрываем прибыль у ненанятых (чтобы не путать) */
+.employee.not-hired .profit-chip {
+  visibility: hidden;
+}
+
+/* Апгрейд и связанные элементы не показываем для ненанятых */
+.employee.not-hired .employee-actions .upgrade-price,
+.employee.not-hired .employee-actions .upgrade-btn {
+  display: none;
+}
+
+/* Гарантируем, что панель выбора кандидатов и кнопки остаются яркими и доступными */
+.employee.not-hired .candidate-selector-panel,
+.employee.not-hired .candidate-selector-panel * ,
+.employee.not-hired .select-candidate-btn,
+.employee.not-hired .hire-btn {
+  opacity: 1;
+  color: inherit;
+  visibility: visible;
+  pointer-events: auto;
+}
+/* ---- Исправление: панель кандидатов остаётся яркой, но цвет кнопок не наследуется ---- */
+.employee.not-hired .candidate-selector-panel,
+.employee.not-hired .candidate-selector-panel * {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  /* убрали color: inherit чтобы не переопределять цвет кнопок */
+}
+
+/* Восстанавливаем цвет текста для основных кнопок внутри ненанятых карточек */
+.employee.not-hired .select-candidate-btn,
+.employee.not-hired .hire-btn {
+  color: white;            /* совпадает с .hire-btn/.select-candidate-btn по умолчанию */
+}
+
+/* Навигационные кнопки (стрелки) — оставить тёмный текст, как в оригинале */
+.employee.not-hired .candidate-nav-btn {
+  color: #333;
+}
+
+/* На всякий случай: если у кнопок есть иконки/спаны, давать им обычный контраст */
+.employee.not-hired .select-candidate-btn .coin-icon,
+.employee.not-hired .hire-btn .coin-icon {
+  color: inherit;
+}
+/* ---- Роль рядом с именем (при и после найма) ---- */
+.emp-role {
+  font-size: 12px;
+  color: #9e9e9e; /* приглушённый серый */
+  margin-left: 8px;
+  font-weight: 600;
+}
+
+/* ---- Явные цвета для прибыли в листалке кандидатов (чтобы не наследовалось) ---- */
+.employee .candidate-selector-panel .candidate-value.positive {
+  color: #4caf50;
+}
+.employee .candidate-selector-panel .candidate-value.negative {
+  color: #e53935;
+}
+.employee .candidate-selector-panel .candidate-value {
+  color: #333; /* дефолт */
+}
+
+/* ---- Цвета бейджей грейдов ---- */
+.grade-badge.junior {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+.grade-badge.middle {
+  background: #f3e8ff;
+  color: #6a1b9a;
+}
+.grade-badge.senior {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+.grade-badge.lead {
+  background: #fff8e1;
+  color: #b8860b;
+}
+
+/* ---- Цвета для маленького бейджа в листалке кандидатов (если используем) ---- */
+.candidate-grade.grade-0 { background: #e3f2fd; color: #1976d2; padding:4px 8px; border-radius:999px; font-size:12px; }
+.candidate-grade.grade-1 { background: #f3e8ff; color: #6a1b9a; padding:4px 8px; border-radius:999px; font-size:12px; }
+.candidate-grade.grade-2 { background: #fff3e0; color: #ef6c00; padding:4px 8px; border-radius:999px; font-size:12px; }
+.candidate-grade.grade-3 { background: #fff8e1; color: #b8860b; padding:4px 8px; border-radius:999px; font-size:12px; }
+
+/* Небольшая точечная корректировка: если у тебя были правила, явно задающие color для .candidate-selector-panel *,
+   их стоит удалить/закомментировать — но выше мы перекрываем цвет явно для целевых элементов. */
+/* Энергия рядом с аватаром */
+.energy-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.energy-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #cfcfcf;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08) inset;
+}
+.energy-dot.full {
+  background: #4caf50;
+  box-shadow: 0 2px 6px rgba(76,175,80,0.15);
+}
+/* ---- Энергия: кнопка и анимации ---- */
+.energy-recover-btn {
+  background: linear-gradient(90deg, #4caf50, #36a02f);
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(76,175,80,0.18);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s;
+}
+.energy-recover-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(76,175,80,0.22); }
+.energy-recover-btn:active { transform: translateY(0); }
+
+/* Точки энергии */
+.energy-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d7d7d7;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06) inset;
+  transform-origin: center;
+  transition: background 180ms ease, transform 180ms ease, opacity 180ms ease;
+}
+
+/* заполненная точка */
+.energy-dot.full {
+  background: #4caf50;
+  box-shadow: 0 3px 8px rgba(76,175,80,0.16);
+}
+
+/* проигрывается при трате: сжимаем и гасим */
+@keyframes energy-spend {
+  0%   { transform: scale(1); opacity: 1; filter: none; }
+  50%  { transform: scale(0.6); opacity: 0.6; filter: brightness(0.9); }
+  100% { transform: scale(0.2); opacity: 0; filter: grayscale(60%); }
+}
+.energy-dot.spend {
+  animation: energy-spend 260ms ease forwards;
+}
+
+/* проигрывается при восстановлении: увеличиваем и перекрашиваем в зелёный */
+@keyframes energy-recover {
+  0%   { transform: scale(0.6); opacity: 0; background: #d7d7d7; }
+  60%  { transform: scale(1.15); opacity: 1; background: #9ae6a6; }
+  100% { transform: scale(1); opacity: 1; background: #4caf50; }
+}
+.energy-dot.recover {
+  animation: energy-recover 340ms cubic-bezier(.2,.9,.3,1) forwards;
+}
+
+/* ===== MAIN MENU ===== */
+
+.main-menu {
+  position: fixed;
+  inset: 0;
+  background: #fafcff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-content {
+  text-align: center;
+}
+
+.menu-logo {
+  font-size: 64px;
+  font-weight: 800;
+  color: #1e88ff;
+  margin-bottom: 60px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+}
+
+.menu-logo span {
+  letter-spacing: 2px;
+}
+
+.menu-btn {
+  width: 280px;
+  padding: 16px 0;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: 0.15s ease;
+}
+
+.menu-btn.primary {
+  background: #1e88ff;
+  color: white;
+  border: none;
+  box-shadow: 0 8px 24px rgba(30,136,255,0.25);
+}
+
+.menu-btn.primary:hover {
+  transform: translateY(-2px);
+}
+
+.menu-btn.secondary {
+  background: white;
+  color: #1e88ff;
+  border: 2px solid #1e88ff;
+}
+
+.menu-btn.secondary:hover {
+  background: #f2f7ff;
+}
+/* ===== DAY SCENES ===== */
+
+.day-intro {
+  position: fixed;
+  inset: 0;
+  background: #0e1320;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  animation: fadeIn 1.5s ease forwards;
+}
+
+.day-title {
+  font-size: 72px;
+  font-weight: 800;
+  color: white;
+  opacity: 0;
+  animation: titleFade 3s ease forwards;
+}
+
+@keyframes titleFade {
+  0% { opacity: 0; transform: scale(0.95); }
+  30% { opacity: 1; transform: scale(1); }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* goals screen */
+
+.day-goals {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,20,35,0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9001;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.goals-card {
+  background: white;
+  border-radius: 24px;
+  padding: 36px 40px;
+  width: 420px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+}
+
+.goals-card h2 {
+  margin-top: 0;
+  font-size: 28px;
+}
+
+.goals-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+  text-align: left;
+}
+
+.goals-card li {
+  margin-bottom: 12px;
+  font-size: 15px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.goals-card li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #4b5cff;
+  font-weight: bold;
+}
+
+/* fade */
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+.fade-out {
+  animation: fadeOut 1.2s ease forwards;
+}
+
+@keyframes fadeOut {
+  to { opacity: 0 }
+}
+.transfer-section {
+  margin-top: 16px;
+}
+
+.transfer-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.transfer-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  background: #d6d6d6;
+  border: 0px;
+  color: #4b5cff;
+  border-radius: 14px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.chip:hover {
+  background: #4b5cff;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+.onboarding-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end; /* тултип снизу по умолчанию */
+  justify-content: center;
+}
+
+.onboarding-tooltip {
+  background: #fff;
+  color: #000;
+  padding: 16px;
+  border-radius: 12px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  font-size: 14px;
+}
+
+.onboarding-tooltip button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: none;
+  background: #ff9800;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Onboarding highlight: целевой прямоугольник с "дыркой" вокруг (маска через box-shadow) */
+.onboarding-highlight {
+  position: absolute;
+  background: transparent; /* сам объект прозрачный — маску создаём через box-shadow */
+  border-radius: 10px;
+  z-index: 1002; /* выше остального, но ниже тултипа */
+  pointer-events: none;  /* чтобы клики проходили к подсвеченному элементу */
+  transition: top 160ms ease, left 160ms ease, width 160ms ease, height 160ms ease;
+}
+
+/* Убедимся что тултип виден поверх маски */
+.onboarding-overlay .onboarding-tooltip,
+.onboarding-tooltip {
+  z-index: 10003;
+  max-width: 380px;
+}
+/* Стили для экрана БЗ (черновик) */
+#knowledgeBaseScreen .kb-table th,
+#knowledgeBaseScreen .kb-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  vertical-align: top;
+}
+#knowledgeBaseScreen .kb-table tbody tr:hover {
+  background: #fafcff;
+}
+.team-circle .team-emoji {
+  font-size: 40px;
+  line-height: 1;
+  user-select: none;
+}
+
+
+
+
+
+
+
+
+

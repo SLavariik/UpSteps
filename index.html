@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Office Idle Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="mainMenu" class="main-menu">
+  <div class="menu-content">
+    <div class="menu-logo">
+      🎉 <span>UP STEPS</span>
+    </div>
+
+    <button class="menu-btn primary" id="startGameBtn">Начать игру</button>
+    <button class="menu-btn secondary" onclick="openKnowledgeBase()">База знаний</button>
+  </div>
+</div>
+<!-- ========== Knowledge Base Screen (черновик) ========== -->
+<div id="knowledgeBaseScreen" class="hidden" style="position:fixed; inset:0; background:#fafcff; z-index:10000; overflow:auto; padding:36px 48px;">
+  <div style="max-width:1100px; margin:0 auto;">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;">
+      <h1 style="margin:0; font-size:28px; color:#1e88ff;">База знаний</h1>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="btn-secondary" onclick="closeKnowledgeBase()" style="padding:10px 14px;">Назад</button>
+      </div>
+    </div>
+
+    <p style="color:#666; margin-top:0;">Черновик справочника. Строки будут подтягиваться из файла вопросов — пока заполнены заглушки.</p>
+
+    <div style="background:#fff; border-radius:12px; padding:12px; box-shadow:0 6px 18px rgba(30,136,255,0.06);">
+      <div style="overflow:auto; max-height:66vh; padding-right:8px;">
+        <table id="kbTable" class="kb-table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left; padding:12px; border-bottom:1px solid #eee; min-width:180px;">Понятие</th>
+              <th style="text-align:left; padding:12px; border-bottom:1px solid #eee;">Определение</th>
+              <th style="text-align:left; padding:12px; border-bottom:1px solid #eee; width:260px;">Зачем нужно</th>
+            </tr>
+          </thead>
+          <tbody id="kbTableBody">
+            <!-- Заполняется JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:18px; display:flex; justify-content:flex-end;">
+      <button class="btn-secondary" onclick="closeKnowledgeBase()">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Онбординг -->
+<div id="onboardingOverlay" class="onboarding-overlay hidden">
+  <div class="onboarding-tooltip">
+    <p id="onboardingText">Тут будет текст подсказки</p>
+    <button id="onboardingNextBtn">Понял</button>
+  </div>
+</div>
+
+
+<!-- Day intro overlay -->
+<div id="dayIntroOverlay" class="day-intro hidden">
+  <div class="day-title" id="dayTitle">День 1</div>
+</div>
+
+<!-- Day goals screen -->
+<div id="dayGoalsScreen" class="day-goals hidden">
+  <div class="goals-card">
+    <h2 id="goalsTitle">Цели дня</h2>
+    <ul id="goalsList"></ul>
+    <button class="btn-primary" id="startDayBtn">Начать день</button>
+  </div>
+</div>
+
+
+
+<div class="top-panel">
+  <div class="time-pill">
+    <span class="clock-icon">🕒</span>
+    <span>День <span id="dayNumber">1</span> <span id="gameTime">09:00</span></span>
+  </div>
+  <button class="rollback-btn" onclick="rollbackDay()">⏪</button>
+  <button class="pause-btn">⏸</button>
+</div>
+
+<!-- Цель -->
+<div class="task-container">
+  <div class="task-pill" id="taskText">
+    <span class="task-icon">✨</span>
+    Нанять 4 сотрудников
+  </div>
+  <div class="task-hint">Твоя задача</div>
+</div>
+
+
+
+<!-- Левая боковая панель -->
+<div class="left-sidebar">
+  <div class="sidebar-item">
+    <div class="sidebar-icon budget-icon">💰</div>
+    <div class="sidebar-label">Бюджет</div>
+  </div>
+  <div class="sidebar-item">
+    <div class="sidebar-icon employees-icon">👥</div>
+    <div class="sidebar-label">Сотрудники</div>
+  </div>
+</div>
+
+<div class="scene">
+
+  <!-- Фон офиса -->
+  <div class="office-bg"></div>
+
+  <!-- Интерактивные круги команд -->
+  <div class="team-circle orange" data-team="orange">
+    <div class="team-emoji">👥</div>
+  </div>
+
+  <!-- Панель команды -->
+  <div class="team-panel" style="display: none;">
+    <button class="close-panel-btn">✕</button>
+    <h2 class="team-title">Команда Discovery</h2>
+
+    <div class="team-desc">
+      Discovery — команда стартапа, создающая цифровой продукт и обучающая управлению IT-проектами. Команда состоит из специалистов разных ролей: продакт-менеджера, дизайнера, аналитика и маркетолога. Каждый член команды вносит свой вклад в создание успешного продукта, работая над своей областью ответственности.
+    </div>
+
+    <div class="team-finances">
+      <div class="finance-item">
+        <span class="finance-label">Бюджет</span>
+        <span class="finance-value">
+          <span class="coin-icon">🪙</span>
+          <span id="teamBudget">0</span>P
+        </span>
+      </div>
+      <div class="finance-item">
+        <span class="finance-label">Прибыль</span>
+        <span class="finance-value profit-value" id="teamProfit">
+          <span class="profit-icon">↓</span>
+          <span id="teamProfitAmount">0</span>P/сек
+        </span>
+      </div>
+      <div class="transfer-section">
+        <div class="transfer-title">Перевести в бюджет</div>
+      
+        <div class="transfer-chips">
+          <button class="chip" onclick="transferToBudgetAmount(5000)">+5 000</button>
+          <button class="chip" onclick="transferToBudgetAmount(10000)">+10 000</button>
+          <button class="chip" onclick="transferToBudgetAmount(20000)">+20 000</button>
+          <button class="chip" onclick="transferToBudgetAmount(50000)">+50 000</button>
+        </div>
+      </div>      
+    </div>
+
+    <div class="employees-section">
+      <div class="employees-header">Работники: <span id="employeesCount">0</span></div>
+      <div id="employees"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Нижняя панель -->
+<div class="bottom-bar">
+  <div class="player-status">
+    <div class="player-avatar">👤</div>
+    <div class="energy-panel" id="energyPanel" style="display:flex;align-items:center;gap:8px;margin-left:8px;">
+      <div class="energy-dots" id="energyDots"></div>
+      <button class="energy-recover-btn" id="energyRecoverBtn" title="Восстановить +1 энергию">＋</button>
+    </div>
+  </div>
+  <div class="balance-display">
+    <span class="coin-icon">🪙</span>
+    <span id="balance">0</span>P
+  </div>
+  <div class="budget-display">
+    <span class="budget-label">Бюджет команды:</span>
+    <span class="coin-icon">🪙</span>
+    <span id="teamBudgetBottom">0</span>P
+  </div>
+  <div class="income-display">
+    <span class="income-arrow">↑</span>
+    <span id="income">0</span>P/c
+  </div>
+</div>
+
+<!-- Экран завершения дня -->
+<div class="modal hidden" id="endDayScreen">
+  <div class="modal-content end-day-content">
+    <div class="confetti-icon">🎉</div>
+    <h2 class="end-day-title">Ты выполнил задачу!</h2>
+    
+    <div class="tasks-list">
+      <div class="task-item completed">
+        <span class="task-check">✓</span>
+        <span class="task-text">Нанять 4 сотрудников</span>
+      </div>
+      <div class="task-item" id="financeTask">
+        <span class="task-check">✓</span>
+        <span class="task-text">Не уйти в минус по финансам компании</span>
+      </div>
+      <div class="task-item" id="moodTask">
+        <span class="task-check">✕</span>
+        <span class="task-text">Выбрать работников, которые не попортят настроение коллективу</span>
+      </div>
+    </div>
+    
+    <div class="end-day-actions">
+      <button class="btn-primary" onclick="startTest()">Пройти тест</button>
+      <button class="btn-secondary" disabled>База знаний</button>
+    </div>
+  </div>
+</div>
+
+<!-- Экран перед началом дня -->
+<div class="modal hidden" id="dayIntroScreen">
+  <div class="modal-content">
+    <h2 class="intro-title">День 1 — Цели</h2>
+    <p class="intro-desc">Короткое описание дня и его смысла.</p>
+
+    <div style="margin-top:16px;">
+      <strong>Задачи:</strong>
+      <ul class="intro-tasks" style="margin-top:8px; text-align:left;">
+        <li>Нанять 4 сотрудников</li>
+        <li>Не уйти в минус по финансам</li>
+        <li>Выбрать сотрудников, которые не испортят настроение</li>
+      </ul>
+    </div>
+
+    <div class="modal-actions" style="margin-top:20px;">
+      <button class="btn-secondary" onclick="closeDayIntro()">Назад</button>
+      <button class="btn-primary" onclick="startDayFromIntro()">Начать день</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модал вопроса для восстановления энергии -->
+<div class="modal hidden" id="energyQuestionModal">
+  <div class="modal-content">
+    <h3 id="energyQTitle">Восстановление энергии</h3>
+    <div id="energyQText" style="margin:12px 0;font-weight:600">Вопрос...</div>
+    <div id="energyQAnswers"></div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn-secondary" id="energyQClose">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- Небольшая модалка-подсказка при отсутствии энергии -->
+<div class="modal hidden" id="energyHintModal">
+  <div class="modal-content">
+    <div>У вас нет энергии — нажмите кнопку <strong>＋</strong>, чтобы попытаться восстановить её через мини-викторину.</div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn-primary" onclick="closeEnergyHint()">Понятно</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Экран теста -->
+<div class="modal hidden" id="testScreen">
+  <div class="modal-content test-content">
+    <div class="test-header">
+      <div class="question-icon">❓</div>
+      <div class="question-number" id="questionNumber">1/3</div>
+    </div>
+    <h2 class="test-question" id="testQuestion">Что такое «Бюджет»?</h2>
+    
+    <div class="answers-list" id="answersList">
+      <!-- Ответы будут добавлены динамически -->
+    </div>
+  </div>
+</div>
+
+<!-- Экран результата теста -->
+<div class="modal hidden" id="testResultScreen">
+  <div class="modal-content test-result-content">
+    <div class="confetti-icon">🎉</div>
+    <h2 class="test-result-title">Ты прошёл тест!</h2>
+    <div class="test-score">
+      <span class="score-check">✓</span>
+      <span class="score-text" id="testScore">3/3</span>
+    </div>
+    <div class="end-day-actions">
+      <button class="btn-primary" onclick="goToNextDay()">Погнали во второй день</button>
+      <button class="btn-secondary" disabled>База знаний</button>
+    </div>
+  </div>
+</div>
+
+<script src="questions.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
