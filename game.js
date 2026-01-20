@@ -148,7 +148,6 @@ function prepareDay(day) {
   // Пересчёт и рендер
   recalcIncome();
   saveGame();
-  updateUI();
 }
 function showDayIntro(day) {
   const intro = document.getElementById("dayIntroOverlay");
@@ -249,12 +248,9 @@ function startDayFromIntro() {
   // И сразу обновляем иконку паузы
   const pauseBtn = document.querySelector('.pause-btn');
   if (pauseBtn) pauseBtn.textContent = '⏸';
+  updateUI();
 
 
-  // Немного даём времени интерфейсу отрисовать состояние, затем разрешаем проверки завершения дня
-  setTimeout(() => {
-    isInitialLoad = false;
-  }, 600);
 }
 
 
