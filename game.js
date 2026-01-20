@@ -137,7 +137,7 @@ function prepareDay(day) {
       // (Опция) Сбрасываем грейд в Junior — если не хотим этого, закомментируй следующую строку
       emp.grade = 0;
       // Сильно отрицательная базовая прибыль — игроку нужно апгрейдать
-      emp.baseProfit = - (PROFIT_PER_LEVEL + Math.floor(Math.random() * 200));
+      emp.baseProfit = - (PROFIT_PER_LEVEL*0.3 + Math.floor(Math.random() * 200));
       // Оставляем emp.basePrice как есть
     }
   }
@@ -1009,9 +1009,6 @@ function goToNextDay() {
   // что вызовет prepareDay(gameState.day) и запустит тик.
   showDayIntro(gameState.day);
 
-  // Сохраняем текущее состояние (день уже увеличен)
-  saveGame();
-  updateUI();
 }
 
 
