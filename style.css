@@ -1445,11 +1445,12 @@ body {
   margin-top: 10px;
   padding: 10px 12px;
   border: none;
-  background: #0055ff;;
+  background: #0055ff;
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
 }
+
 
 
 /* Убедимся что тултип виден поверх маски */
